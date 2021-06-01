@@ -1,18 +1,34 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div class="container mt-5">
+    <div style="text-align: end">
+      <b-button @click="onLogout" type="button" :disabled="loading"
+        >Cerrar sesión</b-button
+      >
+    </div>
+    <div class="mt-5">
+      <h1>Usted a ingresado :)</h1>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "Home",
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      loading: false,
+    };
+  },
+  methods: {
+    ...mapActions(["cerrarSesion"]),
+    async onLogout() {
+      this.loading = true;
+      const success = await this.cerrarSesion();
+      this.loading = false;
+      if (success) this.$router.push({ name: "Login" });
+    },
   },
 };
 </script>
